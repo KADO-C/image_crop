@@ -21,6 +21,7 @@ class Crop extends StatefulWidget {
   final bool alwaysShowGrid;
   final ImageErrorListener? onImageError;
   final BoxShape shape;
+  final double shapeStrokeWidth;
 
   const Crop({
     Key? key,
@@ -30,6 +31,7 @@ class Crop extends StatefulWidget {
     this.alwaysShowGrid = false,
     this.onImageError,
     this.shape = BoxShape.rectangle,
+    this.shapeStrokeWidth = 1.0,
   }) : super(key: key);
 
   Crop.file(
@@ -41,6 +43,7 @@ class Crop extends StatefulWidget {
     this.alwaysShowGrid = false,
     this.onImageError,
     this.shape = BoxShape.rectangle,
+    this.shapeStrokeWidth = 1.0,
   })  : image = FileImage(file, scale: scale),
         super(key: key);
 
@@ -54,6 +57,7 @@ class Crop extends StatefulWidget {
     this.alwaysShowGrid = false,
     this.onImageError,
     this.shape = BoxShape.rectangle,
+    this.shapeStrokeWidth = 1.0,
   })  : image = AssetImage(assetName, bundle: bundle, package: package),
         super(key: key);
 
@@ -198,6 +202,7 @@ class CropState extends State<Crop> with TickerProviderStateMixin {
                 scale: _scale,
                 active: _activeController.value,
                 shape: widget.shape,
+                shapeStrokeWidth: widget.shapeStrokeWidth,
               ),
             ),
           ),
@@ -631,6 +636,7 @@ class _CropPainter extends CustomPainter {
   final double scale;
   final double active;
   final BoxShape shape;
+  final double shapeStrokeWidth;
 
   _CropPainter({
     required this.image,
@@ -640,6 +646,7 @@ class _CropPainter extends CustomPainter {
     required this.scale,
     required this.active,
     required this.shape,
+    required this.shapeStrokeWidth,
   });
 
   @override
@@ -782,7 +789,7 @@ class _CropPainter extends CustomPainter {
       ..isAntiAlias = false
       ..color = _kCropGridColor.withOpacity(_kCropGridColor.opacity * active)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0;
+      ..strokeWidth = shapeStrokeWidth;
 
     if (shape == BoxShape.circle) {
       final path = Path()..addOval(boundaries);
